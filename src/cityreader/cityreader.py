@@ -30,7 +30,7 @@ def cityreader(cities=[]):
   # For each city record, create a new City instance and add it to the 
   # `cities` list
     # with open('C:/Users/Zeal/Documents/Lambdaschool/Computer Science/Sprints/Sprint-Challenge--Intro-Python/src/cityreader/cities.csv') as csv_file:
-    with open(os.getcwd()+ '/src/cityreader/cities.csv') as csv_file:
+    with open(os.getcwd() + '/src/cityreader/cities.csv') as csv_file:
       rows = csv.reader(csv_file)
       next(rows)
       for i in rows:
@@ -76,10 +76,106 @@ for c in cities:
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
-  within = []
+  max_lat = None
+  min_lat = None
+  max_lon = None
+  min_lon = None
 
+  if lat1 >= lat2:
+    max_lat = lat1
+    min_lat = lat2
+  else:
+    max_lat = lat2
+    min_lat = lat1
+
+  if lon1 >= lon2:
+    max_lon = lon1
+    min_lon = lon2
+  else:
+    max_lon = lon2
+    min_lon = lon1
+
+  within = [City(i.name, i.lat, i.lon) for i in cities if min_lat <= i.lat <= max_lat and min_lon <= i.lon <= max_lon]
+
+  # print(within)
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
   return within
+
+
+while True:
+  latitude1 = None
+  longitude1 = None
+  latitude2 = None
+
+  def lat1_func():
+    lat1 = input('Starting Latitude -> ')
+    negative = False
+    if lat1[0] == '-':
+      lat1 = lat1[1:]
+      negative = True
+    if lat1.isdigit():
+      global latitude1
+      if negative == False:
+        latitude1 = float(lat1)
+      else:
+        latitude1 = float('-' + lat1)
+    else:
+      print('Please enter correct input!')
+      lat1_func()
+  
+  def lon1_func():
+    lon1 = input('Starting Longitude -> ')
+    negative = False
+    if lon1[0] == '-':
+      lon1 = lon1[1:]
+      negative = True
+    if lon1.isdigit():
+      global longitude1
+      if negative == False:
+        longitude1 = float(lon1)
+      else:
+        longitude1 = float('-' + lon1)
+    else:
+      print('Please enter correct input!')
+      lon1_func()
+
+  
+  def lat2_func():
+    lat2 = input('Ending Latitude -> ')
+    negative = False
+    if lat2[0] == '-':
+      lat2 = lat2[1:]
+      negative = True
+    if lat2.isdigit():
+      global latitude2
+      if negative == False:
+        latitude2 = float(lat2)
+      else:
+        latitude2 = float('-' + lat2)
+    else:
+      print('Please enter correct input!')
+      lat2_func()
+
+  def lon2_func():
+    lon2 = input('Ending Longitude -> ')
+    negative = False
+    if lon2[0] == '-':
+      lon2 = lon2[1:]
+      negative = True
+    if lon2.isdigit():
+      if negative == False:
+        lon2 = float(lon2)
+      else:
+        lon2 = float('-' + lon2)
+      cityreader_stretch(latitude1, longitude1, latitude2, lon2, cities)
+    else:
+      print('Please enter correct input!')
+      lon2_func()
+  
+  lat1_func()
+  lon1_func()
+  lat2_func()
+  lon2_func()
